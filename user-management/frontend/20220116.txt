@@ -1,0 +1,31 @@
+1.trim Chuẩn hóa dữ liệu đầu vào trước khi gửi Backend (loại bỏ khoảng trắng)
+
+2. Số thứ tự tăng theo page, thay vì bắt đầu lại ở mỗi page
+users.map((user, index) => (
+                <tr key={user._id}>
+                    <td>{startIndex + index}</td>
+
+3.reset khi limit
+<Pagination
+    page={page}
+    totalPages={totalPages}
+    limit={limit}
+    onPageChange={setPage}
+    onLimitChange={(newLimit) => { 
+        setLimit(newLimit); 
+        setPage(1);  // reset to 1
+    }}
+/>
+
+4. Thêm xử lý lỗi trả về chi tiết hơn 400, 500,…
+const fetchUsers = async () => {
+        const url = `http://localhost:3001/api/users?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`;
+        try {
+            const res = await fetch(url);
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                console.error('Fetch error:', res.status, data);
+                alert('Lỗi tải danh sách: ' + (data && (data.error || data.message) ? (data.error || data.message) : `Server ${res.status}`));
+                return;
+            }
+          
