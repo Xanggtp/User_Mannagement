@@ -1,13 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 const app = express();
+
+const PORT = process.env.PORT || 8000;
+const MONGO_URL = process.env.MONGO_URL;
+
+if(!MONGO_URL) {
+  console.error("Missing MONGO_URL in environment variables");
+  process.exit(1);
+}
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 // Kết nối MongoDB với username là MSSV, password là MSSV, dbname là it4409
 mongoose
- .connect("mongodb+srv://20220116:rbwA7TEJWzAhxigo@project.lstzmov.mongodb.net/it4409?retryWrites=true&w=majority&appName=it4409")
+ .connect("")
  .then(() => console.log("Connected to MongoDB"))
  .catch((err) => console.error("MongoDB Error:", err));
 
@@ -127,6 +138,10 @@ app.delete("/api/users/:id", async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
- console.log("Server running on http://localhost:3001");
+app.get("/health", (req, res) => {
+  res.send("Server is healthy");
+});
+
+app.listen(PORT, () => {
+ console.log(`Server running correctly on port ${PORT}`);
 });
