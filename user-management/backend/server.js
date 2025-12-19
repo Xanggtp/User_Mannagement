@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 // Kết nối MongoDB với username là MSSV, password là MSSV, dbname là it4409
 mongoose
- .connect("")
+ .connect(MONGO_URL)
  .then(() => console.log("Connected to MongoDB"))
  .catch((err) => console.error("MongoDB Error:", err));
 
